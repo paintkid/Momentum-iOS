@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct MomentumApp: App {
+    
+    @StateObject private var authViewModel = AuthViewModel()
+
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            RootView()
+                .environmentObject(authViewModel)
         }
     }
 }

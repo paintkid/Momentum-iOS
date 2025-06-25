@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5D7AF5BB2E0BB4F9009D10BE /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7AF5BA2E0BB4F9009D10BE /* Supabase */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		5D7AF5962E0BB30C009D10BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D7AF5BB2E0BB4F9009D10BE /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = Momentum;
 			packageProductDependencies = (
+				5D7AF5BA2E0BB4F9009D10BE /* Supabase */,
 			);
 			productName = Momentum;
 			productReference = 5D7AF5882E0BB30A009D10BE /* Momentum.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 5D7AF57F2E0BB30A009D10BE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5D7AF5B92E0BB4F9009D10BE /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5D7AF5892E0BB30A009D10BE /* Products */;
 			projectDirPath = "";
@@ -558,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5D7AF5B92E0BB4F9009D10BE /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5D7AF5BA2E0BB4F9009D10BE /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D7AF5B92E0BB4F9009D10BE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5D7AF5802E0BB30A009D10BE /* Project object */;
 }

@@ -1,6 +1,5 @@
 import Foundation
 import Supabase
-import Combine
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -11,21 +10,25 @@ class AuthViewModel: ObservableObject {
 
     init() {
         Task {
-            await listenToAuthState()
+            await loadInitialSession()
+            await listenToAuthStateChanges()
         }
     }
     
-    func listenToAuthState() async {
+    private func loadInitialSession() async {
+        do {
+            let currentSession = try await SupabaseManager.shared.client.auth.session
+            self.session = currentSession
+            print("AuthViewModel: Found an existing session for user \(currentSession.user.id)")
+        } catch {
+            print("AuthViewModel: No existing session found on app launch.")
+        }
+    }
+
+    private func listenToAuthStateChanges() async {
         authListener = await SupabaseManager.shared.client.auth.onAuthStateChange { (event, session) in
             DispatchQueue.main.async {
-                switch event {
-                    case .signedIn, .tokenRefreshed:
-                        self.session = session
-                    case .signedOut:
-                        self.session = nil
-                    default:
-                        break
-                }
+                self.session = session
             }
         }
     }

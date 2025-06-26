@@ -37,8 +37,21 @@ class AuthViewModel: ObservableObject {
         try await SupabaseManager.shared.client.auth.signIn(email: email, password: password)
     }
     
-    func signUp(email: String, password: String) async throws {
-        try await SupabaseManager.shared.client.auth.signUp(email: email, password: password)
+    func signUp(email: String, password: String, username: String) async throws {
+        let session = try await SupabaseManager.shared.client.auth.signUp(
+            email: email,
+            password: password
+        )
+        
+        struct ProfileUpdate: Encodable {
+            let username: String
+        }
+        let profileUpdate = ProfileUpdate(username: username)
+        
+        try await SupabaseManager.shared.client.from("profiles")
+            .update(profileUpdate)
+            .eq("id", value: session.user.id)
+            .execute()
     }
     
     func signOut() async throws {

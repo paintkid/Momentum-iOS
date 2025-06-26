@@ -1,6 +1,11 @@
+// In Views/SignupView.swift
+
 import SwiftUI
 
 struct SignupView: View {
+
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     @Environment(\.dismiss) var dismiss
     
     @State private var username = ""
@@ -31,10 +36,10 @@ struct SignupView: View {
                 .padding().background(Color(.systemGray6)).cornerRadius(8).keyboardType(.emailAddress).autocapitalization(.none)
 
             SecureField("Password", text: $password)
-                .padding().background(Color(.systemGray6)).cornerRadius(8)
+                .padding().background(Color(.systemGray6)).cornerRadius(8).textContentType(.newPassword)
 
             SecureField("Confirm Password", text: $confirmPassword)
-                .padding().background(Color(.systemGray6)).cornerRadius(8)
+                .padding().background(Color(.systemGray6)).cornerRadius(8).textContentType(.newPassword)
 
             Button(action: {
                 Task {
@@ -55,7 +60,11 @@ struct SignupView: View {
         .padding()
         .navigationBarBackButtonHidden(true)
         .alert(alertTitle, isPresented: $isShowingAlert) {
-            Button("OK", role: .cancel) { }
+            Button("OK", role: .cancel) {
+                if alertTitle == "Success" {
+                    dismiss()
+                }
+            }
         } message: {
             Text(alertMessage)
         }
@@ -67,25 +76,13 @@ struct SignupView: View {
             return
         }
         
-        struct ProfileUpdate: Encodable {
-            let username: String
-        }
-        
         do {
-            let session = try await SupabaseManager.shared.client.auth.signUp(
+            try await authViewModel.signUp(
                 email: email,
-                password: password
+                password: password,
+                username: username
             )
-            
-
-            let profileUpdate = ProfileUpdate(username: self.username)
-            try await SupabaseManager.shared.client.from("profiles")
-                .update(profileUpdate)
-                .eq("id", value: session.user.id)
-                .execute()
-            
-            presentAlert(title: "Success", message: "Your account has been created! You can now log in.")
-            
+            presentAlert(title: "Success", message: "Your account has been created! Please log in.")
         } catch {
             presentAlert(title: "Signup Error", message: error.localizedDescription)
         }
@@ -101,5 +98,6 @@ struct SignupView: View {
 #Preview {
     NavigationStack {
         SignupView()
+            .environmentObject(AuthViewModel())
     }
 }

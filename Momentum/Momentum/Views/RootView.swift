@@ -7,7 +7,12 @@ struct RootView: View {
         if authViewModel.session == nil {
             LoginView()
         } else {
-            MainContentView()
+            HomeView()
         }
     }
+}
+
+#Preview {
+    RootView()
+        .environmentObject(AuthViewModel())
 }
